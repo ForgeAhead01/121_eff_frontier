@@ -1,10 +1,7 @@
-#include <vector>
-#include <cstdlib>
-#include <string>
 #include "parse.h"
 #include "asset.h"
 
-#include <Eigen/Dense>
+#include <Eigen/Eigen/Dense>
 
 
 
