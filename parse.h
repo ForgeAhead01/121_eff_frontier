@@ -16,7 +16,7 @@ float num_checker(std::string subject);
 void print_matrix(vmatrix paint);
 void cell_check(vmatrix return_rates);
 
-typedef std::vector <Asset> aarray;
+typedef std::vector <Asset *> aarray;
 
 farray corre_parser(std::string corremax, int row_num, int prev_length);
 //aarray asset_population (varray column, vmatrix return_rates);
@@ -102,7 +102,7 @@ aarray populator (std::string universe_addr, std::string corre_addr){
 
 
         //populating new assets, adding them to an array called assets
-        Asset indv_asset(name,return_rate,std,row_num,current_corre);
+        Asset * indv_asset = new Asset (name,return_rate,std,row_num,current_corre);
         //std::cout<<"name: "<<indv_asset->get_name()<<"\n";
         assets.push_back(indv_asset);
         //std::cout<<"assets size: "<<assets.size<<"\n";
