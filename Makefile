@@ -1,4 +1,4 @@
-CCFLAGS=--std=gnu++98 -pedantic -Wall -Werror -ggdb3
+CCFLAGS=--std=gnu++11 -pedantic -Wall -Werror -ggdb3
 efficient_frontier: main.o parse.o asset.o
 	g++ -o  efficient_frontier $(CCFLAGS) main.o asset.o parse.o 
 
