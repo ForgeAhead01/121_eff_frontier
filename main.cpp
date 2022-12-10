@@ -3,7 +3,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
-
+#include "parse.h"
+//#include "asset.h"
 
 
 
@@ -23,6 +24,7 @@ int main(int argc, char ** argv){
         };
         std::string universe_address = argv[1+restrict_check];
         std::string correlation_address = argv[2+restrict_check];
+        populator(universe_address,correlation_address);
        
 
         //std::cout<<restrict_check<<'\n';

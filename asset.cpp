@@ -4,7 +4,7 @@
 #include <cmath>
 
 
-Asset::Asset(std::string givenname, farray return_rates, float average,std::string time_u):name(givenname),rate_of_return(return_rates),average_return(0.0),standard_deviation(0.0),time_unit(time_u){
+Asset::Asset(std::string givenname, float return_rates, float average,std::string time_u):name(givenname),rate_of_return(return_rates),average_return(0.0),standard_deviation(0.0),time_unit(time_u){
 }
 std::string Asset::get_name(){
         //std::cout<<name;

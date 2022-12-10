@@ -20,21 +20,19 @@ class Asset{
   //Behavior: calculate the average return, standard deviation, covariance,correlation
   private:
     std::string name;
-    farray rate_of_return;
+    farray correlation;
     float average_return;
     float standard_deviation;
-    std::string time_unit;
+    int id;
 
   public:
     Asset();
-    Asset(std::string name,farray return_rate,float average,std::string time_unit);
+    Asset(std::string name,float average,float std,int id,farray correlation);
     std::string get_name();
-    float get_average();
-    farray get_returns();
-    void calculate_std();
-
+    farray get_correlation(int oppoid);
     float get_std();
-    float get_specfic_return(int height);
+    float get_average_return();
+
   
 };
 #endif
