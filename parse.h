@@ -125,7 +125,7 @@ aarray populator (std::string universe_addr, std::string corre_addr){
             corre_row_count++;
             std::getline(corremax,nextline);
         }
-        if (row_num+1 != prev_length || row_num != corre_row_count){
+        if (row_num+1 != prev_length || row_num != (int)corre_row_count){
             std::cout<<"row_num: "<<row_num<<", prev_length: "<<prev_length<<"\n";
 
             std::cerr<<"universe and correlation doesn't match up in row length and column length!"<<std::endl;
@@ -173,7 +173,7 @@ farray corre_parser(std::string currentline,int row_num, int prev_length){
     //error checking
     //std::cout<<"row_num: "<<row_num<<", corre_size: "<<corre_size<<"\n";
 
-    if (row_num < corre_size){
+    if (row_num < (int)corre_size){
         if (corarray[row_num] != 1.0000){
             std::cerr<<"corrupted correlation file information! correlation with self not equal to 1!!!"<<std::endl;
             exit(EXIT_FAILURE);
@@ -187,7 +187,7 @@ farray corre_parser(std::string currentline,int row_num, int prev_length){
             std::cerr<<"corrupted correlation file information! Correlation matrix out of bonds!!!"<<std::endl;
             exit(EXIT_FAILURE);
     }
-    if (prev_length != -1 && corre_size != prev_length){
+    if (prev_length != -1 && (int)corre_size != prev_length){
         std::cerr<<"Correlation maxtrix row length not consistent!!!"<<std::endl;
         exit(EXIT_FAILURE);
     }
