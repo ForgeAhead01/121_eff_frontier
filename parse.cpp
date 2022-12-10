@@ -1,7 +1,10 @@
 #include "parse.h"
+#include "asset.h"
 
+//does not catch if correlation matrix has more rows than assets!!! beware
+//test cases: universe has null; universe has too many numbers on one row; could not locate file; univ and correlation have different length/height; universe has null/bad data;universe has too many numbers on one row
 
-int populator (std::string universe_addr, std::string corre_addr){
+aarray populator (std::string universe_addr, std::string corre_addr){
     std::ifstream universe (universe_addr.c_str());
     std::ifstream corremax (corre_addr.c_str());
 
@@ -16,12 +19,19 @@ int populator (std::string universe_addr, std::string corre_addr){
 
         std::string nextline;
         std::string line;
+        aarray assets;
         int step;
         int row_num = 0;
         int prev_length = -1;
-        std::getline(universe,nextline);
-        while(universe >> nextline) {
-            std::cout<<"end of file status"<<universe.good()<<" and thats it\n";
+
+        //std::cout<<"nextline 1,0: "<<nextline<<"\n";
+
+        while(universe.eof() == 0) {
+            //std::getline(universe,nextline);
+            std::getline(universe,nextline);
+
+            //std::cout<<"nextline 2,0: "<<nextline<<"\n";
+
 
             std::stringstream ss (nextline);
             step = 0;
@@ -34,14 +44,15 @@ int populator (std::string universe_addr, std::string corre_addr){
             std::getline(corremax,corre_nextline);
             farray current_corre = corre_parser(corre_nextline,row_num,prev_length);
             size_t curr_corre_row_size = current_corre.size();
-            row_num++;
 
-            //parse through universe, getting indivisual names and properties
+            //parse through the current line in universe, getting indivisual names and properties
             while(std::getline(ss,line,',')){
                 //checks if result is null or some weird stuff. if so, exit; only activates after getting to the 2rd element
                 step ++;
+
                 if (step == 1){
                     name = line;
+
                 }
                 else{
                     float result = num_checker(line);
@@ -61,22 +72,44 @@ int populator (std::string universe_addr, std::string corre_addr){
                     }
                 }
         }
-        std::cout<<name<<',';
-        std::cout<<"return rate: "<<return_rate<<',';
-        std::cout<<" std: "<<std<<'\n';
+        // std::cout<<"name: "<<name<<',';
+        // std::cout<<"return rate: "<<return_rate<<',';
+        // std::cout<<" std: "<<std<<',';
+        // std::cout<<" row_num: "<<row_num<<'\n';
+
+
+        //populating new assets, adding them to an array called assets
+        Asset *indv_asset = new Asset(name,return_rate,std,row_num,current_corre);
+        std::cout<<"name: "<<indv_asset->get_name()<<"\n";
+        assets.push_back(indv_asset);
+        std::cout<<"assets size: "<<assets.size<<"\n";
 
 
 
         prev_length = curr_corre_row_size;
-        std::getline(universe,nextline);
+        //std::getline(universe,nextline);
+        //std::cout<<"nextline 3,0: "<<nextline<<"\n";
+        row_num++;
+
 
         }
-        if (row_num+1 != prev_length){
+        row_num--;
+        corremax.clear();
+        corremax.seekg(0,corremax.beg);
+        std::getline(corremax,nextline);
+        size_t corre_row_count = 0;
+        while (corremax >> nextline){
+            corre_row_count++;
+            std::getline(corremax,nextline);
+        }
+        if (row_num+1 != prev_length || row_num != corre_row_count){
             std::cout<<"row_num: "<<row_num<<", prev_length: "<<prev_length<<"\n";
 
             std::cerr<<"universe and correlation doesn't match up in row length and column length!"<<std::endl;
             exit(EXIT_FAILURE);
         }
+
+
 
         // cell_check(return_rates);
         universe.close();
@@ -86,7 +119,7 @@ int populator (std::string universe_addr, std::string corre_addr){
         // return all_assets;
         
 }
-return 0;
+return assets;
 
 }
 
@@ -105,13 +138,17 @@ farray corre_parser(std::string currentline,int row_num, int prev_length){
             std::cerr<<"corrupted correlation file information!"<<std::endl;
             exit(EXIT_FAILURE);
         }
+        else if (result > 1.00 || result < -1.00){
+            std::cerr<<"correlation is greater than 1 or less than -1!"<<std::endl;
+            exit(EXIT_FAILURE);
+        }
         corarray.push_back(result);
 
     }
     size_t corre_size = corarray.size();
 
     //error checking
-    std::cout<<"row_num: "<<row_num<<", corre_size: "<<corre_size<<"\n";
+    //std::cout<<"row_num: "<<row_num<<", corre_size: "<<corre_size<<"\n";
 
     if (row_num < corre_size){
         if (corarray[row_num] != 1.0000){
