@@ -22,7 +22,7 @@ int main(int argc, char ** argv){
         aarray assets = populator(universe_address,correlation_address);
         //populator(universe_address,correlation_address);
 
-        for (int i = 0;i < assets.size();i++){
+        for (size_t i = 0;i < assets.size();i++){
             //int id = assets[i]->get_id();
             std::cout<<assets[i]->get_specfic_correlation(1)<<"\n";
         }
