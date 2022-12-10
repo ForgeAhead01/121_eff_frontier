@@ -35,7 +35,8 @@ class Asset{
 
   public:
     Asset();
-    Asset(std::string name,float return_rate,float std,int id,farray correlation);
+    Asset(std::string givenname, float return_rat, float stdev,int index,farray mycorrelation);
+    ~Asset();
     std::string get_name();
     float get_std();
     float get_return();
