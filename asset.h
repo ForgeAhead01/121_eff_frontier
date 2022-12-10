@@ -47,7 +47,9 @@ Asset(std::string givenname, float return_rat, float stdev,int index,farray myco
 }
 
 ~Asset(){
-
+// for (int i = 0;i < correlation.size();i++){
+//     //delete correlation[i];
+// }
 }
 
 std::string get_name(){

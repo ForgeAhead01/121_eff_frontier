@@ -24,7 +24,7 @@ int main(int argc, char ** argv){
 
         for (size_t i = 0;i < assets.size();i++){
             //int id = assets[i]->get_id();
-            std::cout<<assets[i]->get_specfic_correlation(1)<<"\n";
+            std::cout<<assets[i].get_specfic_correlation(1)<<"\n";
         }
 
        
