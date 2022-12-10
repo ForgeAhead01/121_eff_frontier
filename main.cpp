@@ -28,20 +28,16 @@ int main(int argc, char ** argv){
             //delete assets[i];
         }
         for (auto& asset : assets) {
-    delete asset;
-}
+            delete asset;
+        }
 
        
 
         //std::cout<<restrict_check<<'\n';
     
-        exit(EXIT_SUCCESS);
 
 
         }
-
-
-
-
+        exit(EXIT_SUCCESS);
 
     }
