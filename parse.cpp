@@ -7,6 +7,7 @@
 aarray populator (std::string universe_addr, std::string corre_addr){
     std::ifstream universe (universe_addr.c_str());
     std::ifstream corremax (corre_addr.c_str());
+    aarray assets;
 
     //test case: bad file name or no file
     if (!universe.good() || !corremax.good()){
@@ -19,7 +20,6 @@ aarray populator (std::string universe_addr, std::string corre_addr){
 
         std::string nextline;
         std::string line;
-        aarray assets;
         int step;
         int row_num = 0;
         int prev_length = -1;
@@ -80,9 +80,9 @@ aarray populator (std::string universe_addr, std::string corre_addr){
 
         //populating new assets, adding them to an array called assets
         Asset *indv_asset = new Asset(name,return_rate,std,row_num,current_corre);
-        std::cout<<"name: "<<indv_asset->get_name()<<"\n";
+        //std::cout<<"name: "<<indv_asset->get_name()<<"\n";
         assets.push_back(indv_asset);
-        std::cout<<"assets size: "<<assets.size<<"\n";
+        //std::cout<<"assets size: "<<assets.size<<"\n";
 
 
 

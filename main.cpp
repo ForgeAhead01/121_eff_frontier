@@ -1,12 +1,10 @@
-#include <fstream>
 #include <vector>
 #include <cstdlib>
-#include <iostream>
 #include <string>
 #include "parse.h"
 #include "asset.h"
 
-
+#include <Eigen/Dense>
 
 
 
@@ -28,7 +26,8 @@ int main(int argc, char ** argv){
         //populator(universe_address,correlation_address);
 
         for (int i = 0;i < assets.size();i++){
-            std::cout<<assets[i]->get_name()<<"\n";
+            //int id = assets[i]->get_id();
+            std::cout<<assets[i]->get_specfic_correlation(1)<<"\n";
         }
 
        
