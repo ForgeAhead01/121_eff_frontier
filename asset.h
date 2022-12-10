@@ -22,28 +22,54 @@ typedef std::vector <float> farray;
 typedef std::vector <farray> vmatrix;
 //typedef std::vector <Asset *> aarray;
 
+
+#include "asset.h"
+#include "parse.h"
+#include <cmath>
+
 class Asset{
-  //State: name, time series rate of return, average return, and standard deviation. o 
-  //Behavior: calculate the average return, standard deviation, covariance,correlation
-  private:
-    std::string name;
-    float return_rate;
-    float standard_deviation;
-    int id;
-    farray correlation;
+        private:
+        std::string name;
+        float return_rate;
+        float standard_deviation;
+        int id;
+        farray correlation;
+
+public:
+Asset(std::string givenname, float return_rat, float stdev,int index,farray mycorrelation){
+        name = givenname;
+        return_rate = return_rat;
+        standard_deviation = stdev;
+        id = index;
+        correlation = mycorrelation;
 
 
-  public:
-    Asset();
-    Asset(std::string givenname, float return_rat, float stdev,int index,farray mycorrelation);
-    ~Asset();
-    std::string get_name();
-    float get_std();
-    float get_return();
-    int get_id();
-    float get_specfic_correlation(int id);
+}
 
-  
-};
+~Asset(){
+
+}
+
+std::string get_name(){
+        //std::cout<<name;
+        return name;
+}
+float get_return(){
+       return return_rate;
+}
+
+int get_id(){
+        return id;
+}
+float get_std(){
+        return standard_deviation;
+}
+float get_specfic_correlation(int index){
+        return correlation[index];
+
+}
+
+}; 
+
 #endif
 

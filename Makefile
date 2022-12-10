@@ -1,10 +1,12 @@
-CCFLAGS=--std=gnu++11 -pedantic -Wall -Werror -ggdb3
-efficient_frontier: main.o parse.o asset.o
-	g++ -I ./Eigen/ -o  efficient_frontier $(CCFLAGS) main.o asset.o parse.o 
+CPPFLAGS=--std=gnu++11 -pedantic -Wall -Werror -ggdb3
 
+all: clean efficient_frontier
 
-%.o: %.cpp asset.h parse.h 
-	g++ -c $(CCFLAGS) $<
+efficient_frontier: main.o
+	g++ $(CPPFLAGS) -o efficient_frontier main.o
+
+main.o: main.cpp parse.h asset.h
+	g++ $(CPPFLAGS) -c main.cpp
 
 clean:
-	rm -f *.o  *~ efficient_frontier
+	rm -f *.o  *~
