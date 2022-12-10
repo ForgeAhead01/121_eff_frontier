@@ -1,7 +1,9 @@
 #include "parse.h"
 #include "asset.h"
+#include "portfolio.h"
+#include "optfinder.h"
 
-//#include "Eigen/Eigen/Dense"
+
 //changing something
 
 
@@ -27,6 +29,8 @@ int main(int argc, char ** argv){
             std::cout<<assets[i]->get_specfic_correlation(1)<<"\n";
             //delete assets[i];
         }
+        matrix_transformer(assets,0.100);
+        
         for (auto& asset : assets) {
             delete asset;
         }

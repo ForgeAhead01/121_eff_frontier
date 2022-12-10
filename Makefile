@@ -5,7 +5,7 @@ all: clean efficient_frontier
 efficient_frontier: main.o
 	g++ $(CPPFLAGS) -o efficient_frontier main.o
 
-main.o: main.cpp parse.h asset.h
+main.o: main.cpp parse.h asset.h Portfolio.h optfinder.h
 	g++ $(CPPFLAGS) -c main.cpp
 
 clean:

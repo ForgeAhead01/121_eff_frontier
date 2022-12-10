@@ -12,24 +12,39 @@
 
 
 class Portfolio{
-  //State: name, time series rate of return, average return, and standard deviation. o 
-  //Behavior: calculate the average return, standard deviation, covariance,correlation
+  //State: required rate of return, volatility (risk), list of assets, and their respective weight. 
+  //Behavior: undecided
   private:
-    std::string name;
-    float return_rate;
-    float standard_deviation;
-    int id;
-    farray correlation;
+    float required_return;
+    float volatility;
+    aarray assets;
+    farray weight;
 
 
   public:
-    Asset();
-    Asset(std::string name,float return_rate,float std,int id,farray correlation);
-    std::string get_name();
-    float get_std();
-    float get_return();
-    int get_id();
-    float get_specfic_correlation(int id);
+    Portfolio();
+    Portfolio(float _required_return,float _volatility,aarray _assets,farray _weight){
+            required_return = _required_return;
+            volatility = _volatility;
+            assets = _assets;
+            weight = _weight;
+    }
+    ~Portfolio(){
+
+    }
+    
+    float get_return(){
+      return required_return;
+    }
+    float get_volatility(){
+      return volatility;
+    }
+    aarray get_assets(){
+      return assets;
+    }
+    farray get_weight(){
+      return weight;
+    }
 
   
 };

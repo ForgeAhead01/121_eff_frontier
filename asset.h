@@ -8,7 +8,9 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-
+#include "asset.h"
+#include "parse.h"
+#include <cmath>
 
 
 typedef std::vector <std::string> varray;
@@ -23,9 +25,7 @@ typedef std::vector <farray> vmatrix;
 //typedef std::vector <Asset *> aarray;
 
 
-#include "asset.h"
-#include "parse.h"
-#include <cmath>
+
 
 class Asset{
         private:
@@ -70,7 +70,13 @@ float get_specfic_correlation(int index){
         return correlation[index];
 
 }
+float get_covariance(int index,float oppo_std){
+        float corr = correlation[index];
+        float cov = get_std() * oppo_std * corr;
+        return cov;
 
+
+}
 }; 
 
 #endif
