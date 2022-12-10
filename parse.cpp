@@ -13,79 +13,69 @@ int populator (std::string universe_addr, std::string corre_addr){
         exit(EXIT_FAILURE);        
         }
     else{
-        varray varr;
-        varray column;
-        farray row;
 
         std::string nextline;
         std::string line;
-
-
-        // float result;
-        vmatrix total_info;
-        vmatrix return_rates;
-        farray same_time_return;
         int step;
-        while(std::getline(universe,nextline)){
+        int row_num = 0;
+        int prev_length = -1;
+        std::getline(universe,nextline);
+        while(universe >> nextline) {
+            std::cout<<"end of file status"<<universe.good()<<" and thats it\n";
+
             std::stringstream ss (nextline);
             step = 0;
             std::string name;
             float return_rate;
             float std;
 
+            //get the float array of correlation
+            std::string corre_nextline;
+            std::getline(corremax,corre_nextline);
+            farray current_corre = corre_parser(corre_nextline,row_num,prev_length);
+            size_t curr_corre_row_size = current_corre.size();
+            row_num++;
+
+            //parse through universe, getting indivisual names and properties
             while(std::getline(ss,line,',')){
                 //checks if result is null or some weird stuff. if so, exit; only activates after getting to the 2rd element
-                if (step == 0){
+                step ++;
+                if (step == 1){
                     name = line;
-                    step ++;
-                    std::cout<<name<<',';
-                }
-                //if (step > 0){
-
-                    // if (!isnormal(result)){
-                    //     std::cerr<<"corrupted universe file information!"<<std::endl;
-                    //     exit(EXIT_FAILURE);
-                    // }
-
-                //}
-                else if (step == 1){
-                    float result = num_checker(line);
-                    return_rate = result;
-                    std::cout<<"return rate: "<<return_rate<<',';
-                    step++;
-                }
-                else if (step == 2){
-                    float result = num_checker(line);
-                    std = result;
-                    std::cout<<" std: "<<std<<'\n';
-                    step = 0;
                 }
                 else{
-                    std::cout<<" wtf step out of bonds: "<<step<<'\n';
+                    float result = num_checker(line);
+                    if (!isnormal(result)){
+                        std::cerr<<"corrupted universe file information!"<<std::endl;
+                        exit(EXIT_FAILURE);
+                    }
+                    if (step == 2){
+                        return_rate = result;
+                    }
+                    else if (step == 3){
+                        std = result;
+                    }
+                    else{
+                        std::cerr<<"Too many data in a single line!"<<std::endl;
+                        exit(EXIT_FAILURE);
+                    }
                 }
-    
+        }
+        std::cout<<name<<',';
+        std::cout<<"return rate: "<<return_rate<<',';
+        std::cout<<" std: "<<std<<'\n';
 
 
-            //(total_info).push_back(row);
-            // if (time_size> 1){
-            //     for (long unsigned int i = 1; i < column_size; i++){
-            //         float current_pos = total_info[time_size-1][i];
-            //         float prior_pos = total_info[time_size-2][i];
-            //         if (current_pos == 0 && prior_pos != 0){
-            //             //std::cout<<"got it!!\n";
-            //             current_pos = prior_pos;
-            //             total_info[time_size-1][i] = total_info[time_size-2][i];
-            //         }
-            //         float rate = (current_pos / prior_pos)-1;
-            //         same_time_return.push_back(rate);
-            //     }
-            //     return_rates.push_back(same_time_return);
-            //     same_time_return.clear();
-            // }
-            ////////////////////////////////////////row.clear();
-            //std::cout<<'\n';
+
+        prev_length = curr_corre_row_size;
+        std::getline(universe,nextline);
 
         }
+        if (row_num+1 != prev_length){
+            std::cout<<"row_num: "<<row_num<<", prev_length: "<<prev_length<<"\n";
+
+            std::cerr<<"universe and correlation doesn't match up in row length and column length!"<<std::endl;
+            exit(EXIT_FAILURE);
         }
 
         // cell_check(return_rates);
@@ -99,6 +89,52 @@ int populator (std::string universe_addr, std::string corre_addr){
 return 0;
 
 }
+
+farray corre_parser(std::string currentline,int row_num, int prev_length){
+    std::string correline;
+    //going through the rows
+    farray corarray;
+    std::stringstream strs (currentline);
+
+    //start looping throuhgh to get the float array
+    while(std::getline(strs,correline,',')){
+        float result = num_checker(correline);
+        //std::cout<<correline<<",";
+
+        if (!isnormal(result)){
+            std::cerr<<"corrupted correlation file information!"<<std::endl;
+            exit(EXIT_FAILURE);
+        }
+        corarray.push_back(result);
+
+    }
+    size_t corre_size = corarray.size();
+
+    //error checking
+    std::cout<<"row_num: "<<row_num<<", corre_size: "<<corre_size<<"\n";
+
+    if (row_num < corre_size){
+        if (corarray[row_num] != 1.0000){
+            std::cerr<<"corrupted correlation file information! correlation with self not equal to 1!!!"<<std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+    else{
+            // for (int i = 0;i < corre_size; i++)
+            //     {
+            //         std::cout<<corarray[i]<<",";
+            //     }
+            std::cerr<<"corrupted correlation file information! Correlation matrix out of bonds!!!"<<std::endl;
+            exit(EXIT_FAILURE);
+    }
+    if (prev_length != -1 && corre_size != prev_length){
+        std::cerr<<"Correlation maxtrix row length not consistent!!!"<<std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    return corarray;
+}
+
 
 // void cell_check(vmatrix return_rates){
 //         size_t table_height = return_rates.size();
